@@ -1,0 +1,132 @@
+.home{
+    position:fixed;
+    top:0;
+    bottom:0;
+    right: 0;
+    left: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+.main-layout {
+    position: fixed;
+    top:0;
+    bottom:0;
+    left: 0;
+    width: 20%;
+}
+
+.main-layout .wrapper-main-layout {
+    background-color: #fff;
+    position: absolute;
+    top:3rem;
+    left:3rem;
+    bottom: 3rem;
+    right:3rem;
+    border-radius: 15px;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.container-page-products {
+    position: absolute;
+    top:3rem;
+    left:0;
+    right:3rem;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.title-header-products{
+    font-size: 3rem;
+    font-weight: 600;
+    color:green;
+}
+
+.header-page-products {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height:8rem;
+}
+
+.header-page-products .wrapper-item-left {
+    display: flex;
+    flex-direction: row;
+}
+
+.header-page-products .wrapper-item-right {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-products {
+    background-color: #fff;
+    z-index: 2;
+    width:100%;
+    margin-top: 3rem;
+}
+
+.modal-add-new-product {
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.close-modal-add-product {
+    position:absolute;
+    top:2rem;
+    right:2rem;
+    opacity: 0.5;
+    font-size: 2.5rem;
+    cursor: pointer;
+}
+
+.inside-modal-add-product {
+    background-color: #fff;
+    position: absolute;
+    top:30%;
+    left:50%;
+    transform: translate(-50%);
+    border-radius: 10px;
+    padding:2rem;
+    padding-right:0;
+}
+
+.wrapper-input-add-product {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.wrapper-input-add-product .wrapper-item {
+    display: flex;
+    flex-direction: column;
+    width:30rem;
+    padding-right: 2rem;
+}
+
+.wrapper-input-add-product .wrapper-item label {
+    opacity: 0.5;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.wrapper-input-add-product .wrapper-item input {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.01);
+    border-radius: 5px;
+    outline: none;
+    height:2.3rem;
+}
+
+.header-product-list {
+    display: flex;
+    flex-direction: row;
+}
