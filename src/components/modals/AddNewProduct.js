@@ -8,7 +8,7 @@ function AddNewProduct({ setOpenAddProduct }) {
   return (
     <div className="modal-add-new-product">
       <div className="inside-modal-add-product">
-        <div>Add new product</div>
+        <div style={{ color: "green", fontSize: "2rem", fontWeight: 600 }}>Add new product</div>
         <div onClick={handleClose} className="close-modal-add-product">
           <i className="fa-solid fa-xmark"></i>
         </div>
@@ -25,18 +25,10 @@ function AddNewProduct({ setOpenAddProduct }) {
             <label>Categories</label>
             <input />
           </div>
-          {/* <div className="wrapper-item">
-            <label>Image</label>
-            <input />
-          </div> */}
           <div className="wrapper-item">
             <label>Time</label>
             <input />
           </div>
-          {/* <div className="wrapper-item">
-            <label>Audio</label>
-            <input />
-          </div> */}
         </div>
         <div>
           <div>UploadImg</div>

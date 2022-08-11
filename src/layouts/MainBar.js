@@ -3,12 +3,12 @@ import React from "react";
 function MainBar() {
   const component = [
     {
-      name: "products",
+      name: "Products",
       icon: <i className="fa-solid fa-list"></i>,
       tag: "Products",
     },
     {
-      name: "test",
+      name: "Test",
       icon: <i className="fa-solid fa-list"></i>,
       tag: "Test",
     },
@@ -21,7 +21,7 @@ function MainBar() {
         <div className="wrapper-item">
           {component.map((item, index) => (
             <div style={{ color: "black" }} key={index}>
-              <div>
+              <div className="wrapper-item-main-bar">
                 <div>{item.icon}</div>
                 <div>{item.name}</div>
               </div>
