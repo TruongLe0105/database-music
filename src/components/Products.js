@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonPrimary from "./buttons/ButtonPrimary";
 import ButtonSecondary from "./buttons/ButtonSecondary";
 import AddNewProduct from "./modals/AddNewProduct";
 import "../pages/home/styles/index.css";
 import styled from "styled-components";
+import { getListProduct } from "../features/apis/ProductSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const HEADER = ["Singer", "Song", "Image", "Categories", "Time", "Audio"];
 
@@ -36,6 +38,13 @@ const LIST = [
 
 function Products() {
   const [openAddProduct, setOpenAddProduct] = useState(false);
+  const dispatch = useDispatch();
+  const { products, isAddProduct } = useSelector(state => state.product);
+  const [list, setList] = useState([]);
+  const widthItem = `calc(100% / ${HEADER.length})`
+
+  console.log("first", products);
+  console.log("isAddProduct", isAddProduct);
 
   const OpenModalAddProduct = () => {
     setOpenAddProduct(true);
@@ -49,7 +58,11 @@ function Products() {
     marginLeft: "1rem",
   };
 
-  // const getListProduct = 
+  useEffect(() => {
+    // products.length > 0 && setList(products)
+    dispatch(getListProduct());
+  }, [isAddProduct])
+
 
   const HeaderProduct = () => {
     const endIndex = HEADER.length - 1;
@@ -59,7 +72,7 @@ function Products() {
         {HEADER.map((item, index) => (
           <div className="header-product-list"
             style={{
-              width: `calc(100% / ${HEADER.length})`,
+              width: widthItem,
               borderRight: index === endIndex ? "" : "1px solid rgb(216, 211, 211)",
             }}
             key={index}
@@ -74,27 +87,27 @@ function Products() {
   const ListProduct = () => {
     return (
       <div className="wrapper-content-products">
-        {LIST.map((item, index) => (
+        {products.length > 0 && products.map((item, index) => (
           <div key={index} className="item-product">
             <div style={{
-              width: `calc(100%/${Object.keys(item).length})`
+              width: widthItem
             }}>{item.singer}</div>
             <div style={{
-              width: `calc(100%/${Object.keys(item).length})`
+              width: widthItem
             }}>{item.song}</div>
             <div style={{
-              width: `calc(100%/${Object.keys(item).length})`
+              width: widthItem
             }} className="wrapper-image-product">
               <img src={item.image} alt={item.song} />
             </div>
             <div style={{
-              width: `calc(100%/${Object.keys(item).length})`
+              width: widthItem
             }}>{item.categories}</div>
             <div style={{
-              width: `calc(100%/${Object.keys(item).length})`
+              width: widthItem
             }}>{item.time}</div>
             <div style={{
-              width: `calc(100%/${Object.keys(item).length})`
+              width: widthItem
             }}>{item.audio}</div>
           </div>
         ))}

@@ -124,20 +124,20 @@
     margin-top: 1rem;
 }
 
-.wrapper-input-add-product .wrapper-item {
+.wrapper-item-input {
     display: flex;
     flex-direction: column;
     width: 30rem;
     padding-right: 2rem;
 }
 
-.wrapper-input-add-product .wrapper-item label {
+.wrapper-item-input label {
     opacity: 0.5;
     font-size: 2rem;
     font-weight: 600;
 }
 
-.wrapper-input-add-product .wrapper-item input {
+.wrapper-item-input input {
     border: 1px solid rgba(0, 0, 0, 0.1);
     background-color: rgba(0, 0, 0, 0.01);
     border-radius: 5px;
