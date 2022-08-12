@@ -56,6 +56,7 @@ export const getListProduct = () => async (dispatch) => {
         const response = await apiService.get(`/products`);
         console.log("res", response)
         dispatch(slice.actions.getListProductSuccess(response.data));
+        toast.success("Add new product success!");
     } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
