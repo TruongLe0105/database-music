@@ -2,10 +2,10 @@ import React from "react";
 import "./index.css";
 
 function ButtonPrimary(props) {
-  const { buttonStyle, children, disable, ...otherProps } = props;
+  const { buttonStyle, children, disable, handleSubmit, ...otherProps } = props;
 
   return (
-    <div className="button-primary" disable={disable} style={buttonStyle}>
+    <div onClick={handleSubmit} className="button-primary" disable={disable} style={buttonStyle}>
       <div>{children}</div>
     </div>
   );

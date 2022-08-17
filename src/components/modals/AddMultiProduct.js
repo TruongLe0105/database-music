@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -9,37 +9,45 @@ import ButtonPrimary from "../buttons/ButtonPrimary";
 import { HeaderProduct, ListProduct } from "../Products";
 
 function AddMultiProduct({ data, setOpenAddMultiProduct }) {
+  const [listInvalid, setlistInvalid] = useState([]);
+  const [listValid, setListValid] = useState([]);
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.product);
 
-  const widthItem = `calc(100% / ${data?.length})`;
-  console.log("here", data);
+  const { products } = useSelector(state => state.product);
+
+  const widthItem = `calc(100% / ${Object.keys(data[0])?.length})`;
+  console.log("daTa", data[0])
   const handleClose = () => {
     setOpenAddMultiProduct(false);
   };
-  const listInValid = [];
 
   const handleSubmit = () => {
-    for (let item in data) {
-      const inValidItem = Object.values(item).find((e) => e?.length === 0);
-      if (inValidItem) {
-        listInValid.push(inValidItem);
-      } else {
-        dispatch(addNewProduct(item)).then(() => {
-          setOpenAddMultiProduct(false);
-        });
-      }
-    }
+    listValid.map(item => {
+      console.log("audio", item.audio)
+      dispatch(addNewProduct(item))
+      setOpenAddMultiProduct(false);
+    })
   };
 
   const checkListValid = () => {
-    console.log("products", products);
-    data.filter(
-      (item) =>
-        products.includes(item) |
-        Object.values(item).find((e) => e?.length === 0)
-    );
-    console.log("checkValid:", data);
+    const listSinger = products.map(product => product.singer.toString().toLowerCase());
+    console.log("listSinger", listSinger)
+    const listSong = products.map(product => product.song.toString().toLowerCase());
+    const listValid = [];
+    const listInvalid = [];
+    data.map(item => {
+      console.log("item:", item)
+      if (listSinger.includes(item.singer.toString().toLowerCase()) && listSong.includes(item.song.toString().toLowerCase())) {
+        listInvalid.push(item);
+      } else {
+        listValid.push(item);
+      }
+      setlistInvalid(listInvalid);
+      setListValid(listValid);
+
+      console.log("listInvalid", listInvalid)
+      console.log("listValid:", listValid)
+    })
   };
 
   useEffect(() => {
@@ -67,14 +75,15 @@ function AddMultiProduct({ data, setOpenAddMultiProduct }) {
           }}
         >
           <div style={{ marginRight: "2rem" }}>
-            <HeaderProduct widthItem={widthItem} />
+            <HeaderProduct custom={true} widthItem={widthItem} />
           </div>
-          <div style={{ marginRight: "2rem" }}>
-            <ListProduct widthItem={widthItem} products={data} />
+          <div className="scroll-bar-addmulti">
+            <ListProduct widthItem={widthItem} products={listValid} listStyle={{ marginBottom: 0 }} />
+            <ListProduct widthItem={widthItem} products={listInvalid} custom={true} />
           </div>
         </div>
-        <div style={button} onClick={handleSubmit}>
-          <ButtonPrimary>Add Multi</ButtonPrimary>
+        <div style={button}>
+          <ButtonPrimary handleSubmit={handleSubmit}>Add Multi</ButtonPrimary>
         </div>
       </div>
     </div>

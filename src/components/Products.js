@@ -4,10 +4,12 @@ import ButtonSecondary from "./buttons/ButtonSecondary";
 import AddNewProduct from "./modals/AddNewProduct";
 import "../pages/home/styles/index.css";
 import styled from "styled-components";
-import { getListProduct } from "../features/apis/ProductSlice";
+import { getListProduct, updateAudio } from "../features/apis/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import * as XLSX from "xlsx";
 import AddMultiProduct from "./modals/AddMultiProduct";
+import audioFile from "../assets/audios/NgoiSaoCoDon.mp3";
+
 
 const HEADER = ["Singer", "Song", "Image", "Categories", "Time", "Audio"];
 
@@ -40,15 +42,38 @@ const LIST = [
     audio: "ahihi",
   },
 ];
-export const ListProduct = ({ products, widthItem }) => {
+export const ListProduct = ({ products, widthItem, custom, listStyle, update }) => {
+  const dispatch = useDispatch();
+
+  const handleUpdateAudio = (e, item) => {
+    const id = item._id;
+    console.log("e", e.target)
+    const selectFile = e.target.files[0];
+    if (selectFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(selectFile);
+      reader.onload = (event) => {
+        const audio = event.target?.result;
+        console.log("length", event)
+        const data = { id, audio }
+        dispatch(updateAudio(data))
+      }
+    }
+  };
+
   return (
-    <div className="wrapper-content-products">
+    <div className="wrapper-content-products" style={listStyle}>
       {products.length > 0 &&
         products.map((item, index) => (
-          <div key={index} className="item-product">
+          <div key={index} className="item-product"
+            style={{
+              backgroundColor: custom && "red"
+            }}>
             <div
               style={{
                 width: widthItem,
+                color: "green",
+                textTransform: "capitalize"
               }}
             >
               {item.singer}
@@ -56,6 +81,8 @@ export const ListProduct = ({ products, widthItem }) => {
             <div
               style={{
                 width: widthItem,
+                color: "green",
+                textTransform: "capitalize"
               }}
             >
               {item.song}
@@ -71,6 +98,7 @@ export const ListProduct = ({ products, widthItem }) => {
             <div
               style={{
                 width: widthItem,
+                textTransform: "capitalize"
               }}
             >
               {item.categories}
@@ -85,9 +113,16 @@ export const ListProduct = ({ products, widthItem }) => {
             <div
               style={{
                 width: widthItem,
+                display: !update && "none",
+                overflow: "hidden"
               }}
             >
-              {item.audio}
+              <input
+                className="custom-file-input"
+                id="audio" name="audio"
+                type="file"
+                onChange={(e) => handleUpdateAudio(e, item)}
+              />
             </div>
           </div>
         ))}
@@ -95,12 +130,13 @@ export const ListProduct = ({ products, widthItem }) => {
   );
 };
 
-export const HeaderProduct = ({ widthItem }) => {
-  const endIndex = HEADER.length - 1;
+export const HeaderProduct = ({ widthItem, custom }) => {
+  const HeaderArr = custom ? HEADER.slice(0, HEADER.length - 1) : HEADER
+  const endIndex = HeaderArr.length - 1;
 
   return (
     <div className="header-container-products">
-      {HEADER.map((item, index) => (
+      {HeaderArr.map((item, index) => (
         <div
           className="header-product-list"
           style={{
@@ -122,7 +158,7 @@ function Products() {
   const [openAddMultiProduct, setOpenAddMultiProduct] = useState(false);
   const [excelData, setExcelData] = useState([]);
   const dispatch = useDispatch();
-  const { products, isAddProduct } = useSelector((state) => state.product);
+  const { products, isAddProduct, isUpdate } = useSelector((state) => state.product);
   const widthItem = `calc(100% / ${HEADER.length})`;
 
   const OpenModalAddProduct = () => {
@@ -130,7 +166,7 @@ function Products() {
   };
 
   const handleFile = (e) => {
-    console.log("here", e.preventDefault());
+    e.preventDefault();
     const fileType = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ];
@@ -148,12 +184,10 @@ function Products() {
           const newData = data.map((item) => ({
             singer: item.singer,
             song: item.song,
-            image: item.imgUrl,
+            image: item.image,
             categories: item.categories,
-            audio: item.audio,
             time: item.time,
           }));
-
           setExcelData(newData);
         };
         reader.onloadend = () => setOpenAddMultiProduct(true);
@@ -169,51 +203,59 @@ function Products() {
 
   useEffect(() => {
     dispatch(getListProduct());
-  }, [isAddProduct]);
+  }, [isAddProduct, isUpdate]);
 
   return (
-    <div className="container-page-products">
-      <div className="title-header-products">Products</div>
-      <div className="header-page-products">
-        <div className="wrapper-item-left">
-          <div onClick={OpenModalAddProduct}>
-            <ButtonPrimary>Add Product</ButtonPrimary>
+    <div className="home">
+      <div className="container-page-products">
+        <div className="title-header-products">Products</div>
+        <div className="header-page-products">
+          <div className="wrapper-item-left">
+            <div onClick={OpenModalAddProduct}>
+              <ButtonPrimary>Add Product</ButtonPrimary>
+            </div>
+            <form>
+              <input
+                style={{ display: "none" }}
+                id="excel-files"
+                type="file"
+                onClick={(event) => {
+                  event.target.value = null;
+                }}
+                onChange={handleFile}
+              />
+              <label htmlFor="excel-files">
+                <ButtonSecondary buttonNewStyle={buttonNewStyle}>
+                  Add Multi Products
+                </ButtonSecondary>
+              </label>
+            </form>
           </div>
-          <form>
-            <input
-              style={{ display: "none" }}
-              id="excel-files"
-              type="file"
-              onClick={(event) => {
-                event.target.value = null;
-              }}
-              onChange={handleFile}
+          <div className="wrapper-item-right">
+            <div>Filter</div>
+            <div>Search</div>
+          </div>
+        </div>
+        <div className="container-products">
+          <HeaderProduct custom={false} widthItem={widthItem} />
+          <div className="scroll-bar-products">
+            <ListProduct update={true} products={products} widthItem={widthItem} />
+          </div>
+        </div>
+        {
+          openAddProduct && (
+            <AddNewProduct setOpenAddProduct={setOpenAddProduct} />
+          )
+        }
+        {
+          openAddMultiProduct && (
+            <AddMultiProduct
+              data={excelData}
+              setOpenAddMultiProduct={setOpenAddMultiProduct}
             />
-            <label htmlFor="excel-files">
-              <ButtonSecondary buttonNewStyle={buttonNewStyle}>
-                Add Multi Products
-              </ButtonSecondary>
-            </label>
-          </form>
-        </div>
-        <div className="wrapper-item-right">
-          <div>Filter</div>
-          <div>Search</div>
-        </div>
-      </div>
-      <div className="container-products">
-        <HeaderProduct widthItem={widthItem} />
-        <ListProduct products={products} widthItem={widthItem} />
-      </div>
-      {openAddProduct && (
-        <AddNewProduct setOpenAddProduct={setOpenAddProduct} />
-      )}
-      {openAddMultiProduct && (
-        <AddMultiProduct
-          data={excelData}
-          setOpenAddMultiProduct={setOpenAddMultiProduct}
-        />
-      )}
+          )
+        }
+      </div >
     </div>
   );
 }

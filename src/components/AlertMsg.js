@@ -8,7 +8,7 @@ function AlertMsg() {
       position="top-right"
       hideProgressBar={false}
       newestOnTop={false}
-      autoClose={1000}
+      autoClose={2000}
       pauseOnHover
     />
   );
