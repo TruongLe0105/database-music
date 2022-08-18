@@ -82,15 +82,15 @@ const LIST = [
 function Categories() {
     const { categories, isAddCategory } = useSelector(state => state.category);
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getListCategories());
-    }, [isAddCategory])
-
     // useEffect(() => {
-    //     LIST.map(item => {
-    //         dispatch(addNewCategories(item))
-    //     })
-    // }, [])
+    //     dispatch(getListCategories());
+    // }, [isAddCategory])
+
+    useEffect(() => {
+        LIST.map(item => {
+            dispatch(addNewCategories(item))
+        })
+    }, [])
 
     return (
         <div className='home'>
