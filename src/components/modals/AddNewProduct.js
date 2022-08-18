@@ -71,7 +71,8 @@ function AddNewProduct({ setOpenAddProduct }) {
 
 
   const handleSubmit = () => {
-    const notEmpty = Object.values(input).some((item) => item);
+    const notEmpty = Object.values(input).filter((item) => !item).length === 0;
+    console.log("notEmpty", notEmpty);
     if (notEmpty) {
       dispatch(addNewProduct(input));
       setOpenAddProduct(false);

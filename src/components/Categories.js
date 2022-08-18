@@ -80,31 +80,31 @@ const LIST = [
 ];
 
 function Categories() {
-    const { categories, isAddCategory } = useSelector(state => state.category);
-    const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(getListCategories());
-    // }, [isAddCategory])
+  const { categories, isAddCategory } = useSelector((state) => state.category);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getListCategories());
+  }, [isAddCategory]);
 
-    useEffect(() => {
-        LIST.map(item => {
-            dispatch(addNewCategories(item))
-        })
-    }, [])
+  //   useEffect(() => {
+  //     LIST.map((item) => {
+  //       dispatch(addNewCategories(item));
+  //     });
+  //   }, []);
 
-    return (
-        <div className='home'>
-            <div className='wrapper-item'>
-                {categories.length > 0 && categories.map((item, index) => (
-                    <div className='item' key={index}>
-                        <div className='title'>{item.title}</div>
-                        <img className='image' src={item.image} alt={item.title} />
-
-                    </div>
-                ))}
+  return (
+    <div className="home">
+      <div className="wrapper-item">
+        {categories.length > 0 &&
+          categories.map((item, index) => (
+            <div className="item" key={index}>
+              <div className="title">{item.title}</div>
+              <img className="image" src={item.image} alt={item.title} />
             </div>
-        </div>
-    )
+          ))}
+      </div>
+    </div>
+  );
 }
 
 export default Categories
