@@ -130,8 +130,8 @@ export const ListProduct = ({ products, widthItem, custom, listStyle, update }) 
   );
 };
 
-export const HeaderProduct = ({ widthItem, custom }) => {
-  const HeaderArr = custom ? HEADER.slice(0, HEADER.length - 1) : HEADER
+export const HeaderProduct = ({ widthItem, custom, header }) => {
+  const HeaderArr = custom ? HEADER.slice(0, HEADER.length - 1) : HEADER || header;
   const endIndex = HeaderArr.length - 1;
 
   return (

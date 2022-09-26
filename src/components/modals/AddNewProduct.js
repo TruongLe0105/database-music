@@ -57,12 +57,6 @@ function AddNewProduct({ setOpenAddProduct }) {
         case "categories":
           setInput({ ...input, categories: value });
           break;
-        // case "image":
-        //   setInput({ ...input, image: file });
-        //   break;
-        // case "audio":
-        //   setInput({ ...input, audio: value });
-        //   break;
         default:
           break;
       }
@@ -71,12 +65,13 @@ function AddNewProduct({ setOpenAddProduct }) {
 
 
   const handleSubmit = () => {
-    const notEmpty = Object.values(input).some((item) => item);
-    if (notEmpty) {
+    const inValid = Object.values(input).some((item) => !item);
+    console.log("inVAlid", inValid)
+    if (!inValid) {
       dispatch(addNewProduct(input));
       setOpenAddProduct(false);
     } else {
-      toast.error("Fields can not empty!");
+      return toast.error("Fields can not empty!");
     }
   };
 
@@ -151,7 +146,7 @@ function AddNewProduct({ setOpenAddProduct }) {
           <div className="wrapper-item-input">
             <div style={{ display: "flex" }}>
               <label className="wrapper-item-input-file" htmlFor="image" style={{ marginLeft: "2rem" }}>
-                <i style={{ fontSize: "5rem" }} className="fa-solid fa-camera"></i>
+                <i style={{ fontSize: "5rem" }} className="fa-solid fa-image"></i>
               </label>
               {input.image && <div className="wrapper-item-input-file" >
                 <img src={input.image} alt="singer" style={{ width: "100%", height: "100%" }} />

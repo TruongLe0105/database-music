@@ -7,6 +7,9 @@ const initialState = {
     isLoading: false,
     error: null,
     isAddCategory: false,
+    isPost: false,
+    isDeleted: false,
+    isUpdated: false,
     categories: [],
 };
 
@@ -21,42 +24,79 @@ const slice = createSlice({
             state.isLoading = false;
             state.error = action.payload
         },
-        addNewCategoriesSuccess(state, action) {
-            state.isLoading = false;
-            state.error = null;
-            state.isAddCategory = !state.isAddCategory;
-        },
         getListcategoriesSuccess(state, action) {
             state.isLoading = false;
             state.error = null;
             state.categories = action.payload.categories;
-        }
+        },
+        addNewCategoriesSuccess(state, action) {
+            state.isLoading = false;
+            state.error = null;
+            state.isPost = !state.isPost;
+            state.isAddCategory = !state.isAddCategory;
+        },
+        deleteCategorySuccess(state, action) {
+            state.isLoading = false;
+            state.error = null;
+            state.isDeleted = !state.isDeleted;
+        },
+        updateCategorySuccess(state, action) {
+            state.isLoading = false;
+            state.error = null;
+            state.isUpdated = !state.isUpdated;
+        },
     }
-})
-
+});
 
 export default slice.reducer;
 
-export const addNewCategories = (newCategory) => async (dispatch) => {
+export const addNewCategories = (data) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-        const response = await apiService.post(`/categories/add`, newCategory);
+        const response = await apiService.post(`/categories/add`, data);
         dispatch(slice.actions.addNewCategoriesSuccess(response.data));
         toast.success("Add new categories success!");
     } catch (error) {
         dispatch(slice.actions.hasError(error.message));
-        toast.error(error.message)
+        toast.error(error.message);
+        // toast.error(error?.response?.data?.error?.message);
+        console.log("error", error)
     }
 };
 
-export const getListCategories = () => async (dispatch) => {
+export const getListCategories = (key) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-        const response = await apiService.get(`/categories`);
-        console.log("res", response)
+        const response = await apiService.get(`/categories/${key}`);
         dispatch(slice.actions.getListcategoriesSuccess(response.data));
     } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
+        // toast.error(error?.response?.data?.error?.message);
     }
-}
+};
+
+export const deleteCategory = (id) => async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+        const response = await apiService.delete(`/categories/${id}`);
+        dispatch(slice.actions.deleteCategorySuccess(response.data));
+        toast.success("Delete category success!");
+    } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+    }
+};
+
+export const updateCategory = (id, data) => async (dispatch) => {
+    console.log("id", id)
+    dispatch(slice.actions.startLoading());
+    try {
+        const response = await apiService.put(`/categories/${id}`, data);
+        dispatch(slice.actions.updateCategorySuccess(response.data));
+        toast.success("Update category success!");
+    } catch (error) {
+        dispatch(slice.hasError());
+        toast.error(error.message);
+    }
+};
