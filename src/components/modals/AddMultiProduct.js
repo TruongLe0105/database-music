@@ -16,15 +16,13 @@ function AddMultiProduct({ data, setOpenAddMultiProduct }) {
   const { products } = useSelector(state => state.product);
 
   const widthItem = `calc(100% / ${Object.keys(data[0])?.length})`;
-  console.log("daTa", data[0])
   const handleClose = () => {
     setOpenAddMultiProduct(false);
   };
 
   const handleSubmit = () => {
     listValid.map(item => {
-      console.log("audio", item.audio)
-      dispatch(addNewProduct(item))
+      dispatch(addNewProduct(item));
       setOpenAddMultiProduct(false);
     })
   };
@@ -44,9 +42,6 @@ function AddMultiProduct({ data, setOpenAddMultiProduct }) {
       }
       setlistInvalid(listInvalid);
       setListValid(listValid);
-
-      console.log("listInvalid", listInvalid)
-      console.log("listValid:", listValid)
     })
   };
 

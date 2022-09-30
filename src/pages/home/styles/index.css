@@ -76,6 +76,10 @@
     height: 8rem;
 }
 
+.wrapper-item {
+    padding: 1rem 0;
+}
+
 .header-page-products .wrapper-item-left {
     display: flex;
     flex-direction: row;
@@ -220,6 +224,12 @@
     margin: 5px 0;
     background-color: #fff;
     font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.item-product:hover {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    transform: scaleY(1.03);
 }
 
 .item-product .wrapper-image-product {

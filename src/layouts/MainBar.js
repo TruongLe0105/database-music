@@ -50,7 +50,7 @@ function MainBar() {
   const component = [
     {
       name: "Products",
-      icon: <i className="fa-solid fa-list"></i>,
+      icon: <i className="fa-brands fa-product-hunt"></i>,
       tag: "Products",
       path: "/",
       has_child: false,
@@ -72,7 +72,7 @@ function MainBar() {
   return (
     <div className="main-layout">
       <div className="wrapper-main-layout">
-        <div>Musike</div>
+        {/* <div>Musike</div> */}
         <div className="wrapper-item">
           {component.map((item, index) => (
             <div onClick={() => handleNavigate(index, item)}
@@ -81,10 +81,15 @@ function MainBar() {
             >
               <div className="btn-routes"
                 style={{
-                  backgroundColor: active === index && "red"
+                  backgroundColor: active === index && "red",
                 }}
               >
-                <div className="wrapper-item-main-bar">
+                <div
+                  className="wrapper-item-main-bar"
+                  style={{
+                    color: active === index && "white"
+                  }}
+                >
                   <div>{item.icon}</div>
                   <div>{item.name}</div>
                 </div>

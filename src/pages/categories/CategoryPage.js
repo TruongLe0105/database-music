@@ -189,7 +189,37 @@ const tabs = [
     },
     {
         guitar: "Guitar"
-    }
+    },
+    {
+        none_lyrics: "Nhạc Không Lời"
+    },
+    {
+        acoustic: "Acoustic"
+    },
+    {
+        immortalMusic_VN: "Nhạc Việt Bất Hủ"
+    },
+    {
+        music_Trinh: "Nhạc Trịnh"
+    },
+    {
+        jazz: "Jazz"
+    },
+    {
+        rock: "Rock"
+    },
+    {
+        latin: "Latin"
+    },
+    {
+        piano: "Piano"
+    },
+    {
+        classicMusic: "Nhạc Cổ Điển"
+    },
+    {
+        immortalMusic_US_UK: "Nhạc Âu Mỹ Bất Hủ"
+    },
 ]
 
 function CategoryPage() {
@@ -208,7 +238,7 @@ function CategoryPage() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const key = Object.keys(currentTab)[0]
+        const key = Object.keys(currentTab)[0].toLowerCase();
         dispatch(getListCategories(key));
     }, [currentTab, isPost, isDeleted, isUpdated]);
 
@@ -272,6 +302,9 @@ function CategoryPage() {
                                         />
                                         <div
                                             className="title-card"
+                                            style={{
+                                                top: Object.keys(currentTab)[0] === "countries" && "70%"
+                                            }}
                                         >{item?.title}</div>
                                         {
                                             Object.keys(currentTab)[0] === "moods_action" &&
@@ -329,8 +362,6 @@ function CategoryPage() {
                                 )
                         ))
                     }
-
-
                 </div>
             </div>
         )
@@ -392,6 +423,7 @@ function CategoryPage() {
                     setCurrentCard={setCurrentCard}
                     setOpenModalDelete={setOpenModalDelete}
                     id={currentCard}
+                    callback={deleteCategory}
                 />
             }
         </div>

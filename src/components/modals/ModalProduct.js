@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addNewProduct } from "../../features/apis/ProductSlice";
+import { getListCategories } from "../../features/apis/CategoriesSlice";
+import { addNewProduct, updateProduct } from "../../features/apis/ProductSlice";
 import { cloudinaryUpload } from "../../utils/cloudinary";
 import ButtonPrimary from "../buttons/ButtonPrimary";
 
-function AddNewProduct({ setOpenAddProduct }) {
+function ModalProduct({
+  setOpenModal,
+  openModal,
+  currentItem,
+}) {
   const [input, setInput] = useState({
     singer: "",
     song: "",
@@ -16,8 +21,10 @@ function AddNewProduct({ setOpenAddProduct }) {
   });
   const dispatch = useDispatch();
 
+  console.log("first", currentItem?.image)
+
   const handleClose = () => {
-    setOpenAddProduct(false);
+    setOpenModal(false);
   };
 
   const handleChangeInput = async (e, item) => {
@@ -65,13 +72,21 @@ function AddNewProduct({ setOpenAddProduct }) {
 
 
   const handleSubmit = () => {
-    const inValid = Object.values(input).some((item) => !item);
-    console.log("inVAlid", inValid)
-    if (!inValid) {
-      dispatch(addNewProduct(input));
-      setOpenAddProduct(false);
+    console.log("current", currentItem?._id)
+    if (openModal === "UPDATE") {
+      const id = currentItem?._id;
+      dispatch(updateProduct(id, input)).then(() => {
+        setOpenModal(false)
+      })
     } else {
-      return toast.error("Fields can not empty!");
+      const inValid = Object.values(input).some((item) => !item);
+      if (!inValid) {
+        dispatch(addNewProduct(input)).then(() => {
+          setOpenModal(false);
+        })
+      } else {
+        return toast.error("Fields can not empty!");
+      }
     }
   };
 
@@ -96,6 +111,7 @@ function AddNewProduct({ setOpenAddProduct }) {
           <div className="wrapper-item-input">
             <label htmlFor="singer">Singer*</label>
             <input
+              placeholder={openModal === "ADD" ? "" : `${currentItem.singer}`}
               id="singer"
               name="singer"
               value={input.singer}
@@ -105,6 +121,7 @@ function AddNewProduct({ setOpenAddProduct }) {
           <div className="wrapper-item-input">
             <label htmlFor="song">Song*</label>
             <input
+              placeholder={openModal === "ADD" ? "" : `${currentItem.song}`}
               id="song"
               name="song"
               value={input.song}
@@ -114,6 +131,7 @@ function AddNewProduct({ setOpenAddProduct }) {
           <div className="wrapper-item-input">
             <label htmlFor="categories">Categories*</label>
             <input
+              placeholder={openModal === "ADD" ? "" : `${currentItem.category}`}
               id="categories"
               name="categories"
               value={input.categories}
@@ -123,6 +141,7 @@ function AddNewProduct({ setOpenAddProduct }) {
           <div className="wrapper-item-input">
             <label htmlFor="time">Time*</label>
             <input
+              placeholder={openModal === "ADD" ? "" : `${currentItem.time}`}
               id="time"
               name="time"
               value={input.time}
@@ -162,11 +181,11 @@ function AddNewProduct({ setOpenAddProduct }) {
           </div>
         </div>
         <div style={button}>
-          <ButtonPrimary handleSubmit={handleSubmit}>Add</ButtonPrimary>
+          <ButtonPrimary handleSubmit={handleSubmit}>{openModal === "ADD" ? "Add" : "Update"}</ButtonPrimary>
         </div>
       </form>
     </div >
   );
 }
 
-export default AddNewProduct;
+export default ModalProduct;

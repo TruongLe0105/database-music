@@ -53,12 +53,20 @@ function ModalCategories({
     }
 
     const handleSubmit = () => {
-        currentModal === "ADD" ?
-            dispatch(addNewCategories(data)).then(() => setOpenModal(false)) :
+        if (currentModal === "UPDATE") {
             dispatch(updateCategory(currentCard, data)).then(() => {
                 setOpenModal(false);
                 currentCard(null);
             })
+        } else {
+            const inValid = Object.values(data).some((item) => !item);
+            if (!inValid) {
+                dispatch(addNewCategories(data));
+                setOpenModal(false);
+            } else {
+                return toast.error("Fields can not empty!");
+            }
+        }
     };
 
     return (
@@ -81,7 +89,6 @@ function ModalCategories({
                         autoComplete="off"
                         id="image"
                         name="image"
-
                         placeholder={currentModal === "UPDATE" ? targetCategory.image : undefined}
                         onChange={(e) => hanleChangeInput(e, "image")}
                     />
@@ -92,7 +99,6 @@ function ModalCategories({
                         autoComplete="off"
                         id="title"
                         name="title"
-
                         placeholder={currentModal === "UPDATE" ? targetCategory.title : undefined}
                         onChange={(e) => hanleChangeInput(e, "title")}
                     />
@@ -106,7 +112,6 @@ function ModalCategories({
                                 autoComplete="off"
                                 id="singer"
                                 name="singer"
-
                                 placeholder={currentModal === "UPDATE" ? targetCategory.singer : undefined}
                                 onChange={(e) => hanleChangeInput(e, "singer")}
                             />
@@ -121,14 +126,12 @@ function ModalCategories({
                                 <input
                                     autoComplete="off"
                                     id="banner"
-                                    name="banner"
                                     placeholder={currentModal === "UPDATE" ? targetCategory.banner_first : undefined}
                                     onChange={(e) => hanleChangeInput(e, "banner_first")}
                                 />
                             </div>
                             <div className="wrapper-item-input input-category">
                                 <input
-                                    autoComplete="off"
                                     placeholder={currentModal === "UPDATE" ? targetCategory.banner_second : undefined}
                                     onChange={(e) => hanleChangeInput(e, "banner_second")}
                                     style={{ margin: "1rem 0" }}
@@ -136,7 +139,6 @@ function ModalCategories({
                             </div>
                             <div className="wrapper-item-input input-category">
                                 <input
-                                    autoComplete="off"
                                     placeholder={currentModal === "UPDATE" ? targetCategory.banner_third : undefined}
                                     onChange={(e) => hanleChangeInput(e, "banner_third")}
                                 />

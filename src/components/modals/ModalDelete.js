@@ -7,12 +7,13 @@ import ButtonSecondary from '../buttons/ButtonSecondary'
 function ModalDelete({
     setCurrentCard,
     setOpenModalDelete,
-    id
+    id,
+    callback
 }) {
     const dispatch = useDispatch();
 
     const handleDelete = () => {
-        dispatch(deleteCategory(id)).then(() => {
+        dispatch(callback(id)).then(() => {
             setOpenModalDelete(false);
             setCurrentCard(null);
         });
