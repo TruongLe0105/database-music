@@ -4,7 +4,7 @@
     justify-content: flex-end;
     font-size: 1.4rem;
     position: absolute;
-    right: 4rem;
+    right: 3rem;
     top: 16.5rem;
 }
 
@@ -45,6 +45,7 @@
     padding: 0.7rem 1.5rem;
     cursor: pointer;
     margin: 0.5rem;
+    margin-left: 0;
     font-size: 1.6rem;
     color: white;
 }
@@ -63,7 +64,6 @@
     color: white;
     position: absolute;
     top: 22rem;
-    left: 0;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -86,7 +86,7 @@
 
 .card-item-category {
     position: relative;
-    width: 22.2%;
+    width: 22.4%;
     height: 14rem;
     margin: 1rem;
     overflow: hidden;

@@ -14,7 +14,6 @@ export const cloudinaryUpload = async (image) => {
       headers: { "Content-Type": "multipart/form-data" },
     });
     const imageUrl = response.data.secure_url;
-    console.log("imageUrl", imageUrl)
     return imageUrl;
   } catch (error) {
     throw error;

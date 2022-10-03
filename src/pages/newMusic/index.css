@@ -1,0 +1,23 @@
+.component-general {
+    margin-left: 25%;
+    margin-top: 2rem;
+    margin-right: 2rem;
+    /* background-color: #333; */
+}
+
+.tabs-new_music {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.tab-music {
+    border-radius: 10px;
+    background-color: rgba(1, 1, 1, 0.5);
+    padding: 0.7rem 1.5rem;
+    cursor: pointer;
+    margin: 0.5rem;
+    margin-left: 0;
+    font-size: 1.6rem;
+    color: white;
+}

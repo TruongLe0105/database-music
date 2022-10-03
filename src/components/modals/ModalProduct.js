@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getListCategories } from "../../features/apis/CategoriesSlice";
@@ -16,12 +16,15 @@ function ModalProduct({
     song: "",
     time: "",
     image: "",
-    categories: "",
+    category: "",
     audio: "",
+    orther: [],
   });
-  const dispatch = useDispatch();
+  const [genres, setGenres] = useState(null);
+  const [ortherList, setOrtherList] = useState(null);
 
-  console.log("first", currentItem?.image)
+  const dispatch = useDispatch();
+  const ortherRef = useRef();
 
   const handleClose = () => {
     setOpenModal(false);
@@ -62,7 +65,10 @@ function ModalProduct({
           setInput({ ...input, time: value });
           break;
         case "categories":
-          setInput({ ...input, categories: value });
+          setInput({ ...input, category: value });
+          break;
+        case "orther":
+          setGenres(value);
           break;
         default:
           break;
@@ -70,9 +76,20 @@ function ModalProduct({
     }
   };
 
+  const handleAddInOrther = () => {
+    if (genres) {
+      input?.orther?.push(genres);
+      ortherRef.current.value = "";
+      setOrtherList(genres);
+    }
+  };
+
+  const unchecked = (item) => {
+    const newValue = input?.orther?.filter(e => e !== item);
+    setInput({ ...input, orther: newValue });
+  }
 
   const handleSubmit = () => {
-    console.log("current", currentItem?._id)
     if (openModal === "UPDATE") {
       const id = currentItem?._id;
       dispatch(updateProduct(id, input)).then(() => {
@@ -80,7 +97,7 @@ function ModalProduct({
       })
     } else {
       const inValid = Object.values(input).some((item) => !item);
-      if (!inValid) {
+      if (!inValid && input?.orther.length !== 0) {
         dispatch(addNewProduct(input)).then(() => {
           setOpenModal(false);
         })
@@ -97,6 +114,9 @@ function ModalProduct({
     alignItems: "center",
     justifyContent: "flex-end",
   };
+
+  useEffect(() => {
+  }, [ortherList]);
 
   return (
     <div className="modal-add-new-product">
@@ -129,12 +149,12 @@ function ModalProduct({
             />
           </div>
           <div className="wrapper-item-input">
-            <label htmlFor="categories">Categories*</label>
+            <label htmlFor="categories">Category*</label>
             <input
               placeholder={openModal === "ADD" ? "" : `${currentItem.category}`}
               id="categories"
               name="categories"
-              value={input.categories}
+              value={input.category}
               onChange={(e) => handleChangeInput(e, "categories")}
             />
           </div>
@@ -148,6 +168,29 @@ function ModalProduct({
               onChange={(e) => handleChangeInput(e, "time")}
             />
           </div>
+        </div>
+        <div className="wrapper-item-input">
+          <label htmlFor="orther">Genres Orther*</label>
+          <div className="wrapper-orther">
+            <input
+              placeholder={openModal === "ADD" ? "" : `${currentItem.time}`}
+              id="orther"
+              name="orther"
+              onChange={(e) => handleChangeInput(e, "orther")}
+              ref={ortherRef}
+            />
+            {genres &&
+              <i onClick={handleAddInOrther} className="fa-solid fa-check"></i>
+            }
+          </div>
+        </div>
+        <div className="wrapper-orther-icon">
+          {input.orther?.map((item, index) => (
+            <div key={index} className="orther-icon">
+              {item}
+              <i onClick={() => unchecked(item)} className="fa-solid fa-xmark"></i>
+            </div>
+          ))}
         </div>
         <div className="wrapper-input-file-add">
           <div className="wrapper-item-input">
@@ -163,13 +206,14 @@ function ModalProduct({
             />
           </div>
           <div className="wrapper-item-input">
-            <div style={{ display: "flex" }}>
+            <div className="border-img" style={{ display: "flex" }}>
               <label className="wrapper-item-input-file" htmlFor="image" style={{ marginLeft: "2rem" }}>
                 <i style={{ fontSize: "5rem" }} className="fa-solid fa-image"></i>
               </label>
-              {input.image && <div className="wrapper-item-input-file" >
-                <img src={input.image} alt="singer" style={{ width: "100%", height: "100%" }} />
-              </div>}
+              {input.image &&
+                <div className="wrapper-item-input-file" >
+                  <img src={input.image} alt="singer" style={{ width: "100%", height: "100%" }} />
+                </div>}
               <input
                 className="input-file"
                 type="file"

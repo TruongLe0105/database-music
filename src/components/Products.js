@@ -12,7 +12,7 @@ import audioFile from "../assets/audios/NgoiSaoCoDon.mp3";
 import ModalDelete from "./modals/ModalDelete";
 
 
-const HEADER = ["Singer", "Song", "Image", "Categories", "Time", "Audio"];
+const HEADER = ["Singer", "Song", "Image", "Category", "Genres Orther", "Time", "Audio"];
 
 const LIST = [
   {
@@ -69,7 +69,6 @@ export const ListProduct = ({
   };
 
   const handleCurrentItem = (item) => {
-    console.log("current", currentItem?._id)
     currentItem && item?._id === currentItem?._id ? setCurrentItem(null) : setCurrentItem(item);
   }
 
@@ -118,7 +117,15 @@ export const ListProduct = ({
                 textTransform: "capitalize"
               }}
             >
-              {item.categories}
+              {item.category}
+            </div>
+            <div
+              style={{
+                width: widthItem,
+                textTransform: "capitalize"
+              }}
+            >
+              {item.orther}
             </div>
             <div
               style={{
@@ -215,7 +222,7 @@ function Products() {
             singer: item.singer,
             song: item.song,
             image: item.image,
-            categories: item.categories,
+            category: item.category,
             time: item.time,
           }));
           setExcelData(newData);
@@ -230,14 +237,6 @@ function Products() {
   const buttonNewStyle = {
     marginLeft: "1rem",
   };
-
-  // const { categories } = useSelector(state => state.category);
-
-  // console.log({ categories })
-
-  // useEffect(() => {
-  //   dispatch(getListCategories());
-  // }, []);
 
   useEffect(() => {
     dispatch(getListProduct());

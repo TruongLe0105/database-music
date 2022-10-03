@@ -23,10 +23,10 @@
 .main-layout .wrapper-main-layout {
     background-color: #fff;
     position: absolute;
-    top: 3rem;
-    left: 3rem;
-    bottom: 3rem;
-    right: 3rem;
+    top: 2rem;
+    left: 2rem;
+    bottom: 2rem;
+    right: 2rem;
     border-radius: 15px;
     font-size: 2.2rem;
     font-weight: 500;
@@ -55,7 +55,7 @@
     position: absolute;
     top: 3rem;
     left: 0;
-    right: 3rem;
+    right: 2rem;
     bottom: 3rem;
     font-size: 1.4rem;
     font-weight: 500;
@@ -145,6 +145,12 @@
     flex-direction: column;
 }
 
+.border-img {
+    border: .3px solid #333;
+    border-radius: 8px;
+    width: max-content;
+}
+
 .wrapper-item-input label {
     opacity: 0.5;
     font-size: 2rem;
@@ -174,6 +180,25 @@
 .wrapper-item-input .input-file {
     display: none;
     background-color: #333;
+}
+
+.wrapper-item-input .wrapper-orther {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.wrapper-orther input {
+    width: 100%;
+}
+
+.wrapper-orther i {
+    justify-self: flex-end;
+    position: absolute;
+    right: 0.5rem;
+    cursor: pointer;
+    font-size: 2rem;
 }
 
 .container-products {
@@ -256,47 +281,32 @@
     margin-top: 4rem;
 }
 
-/* .home .wrapper-item {
+.wrapper-orther-icon {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: scroll;
-} */
+}
 
-/* .home .wrapper-item .item {
-    width: 22%;
-    margin: 0.5%;
+.orther-icon {
     position: relative;
-    overflow: hidden;
-    border-radius: 1.5rem;
-    z-index: 200;
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-}
-
-.item:hover .image {
-    box-shadow: rgba(255, 255, 255, 0.3) 0px 1px 2px 0px, rgba(255, 255, 255, 0.15) 0px 1px 3px 1px;
-    animation: scaleImage 0.3s linear;
-    transform: scale(1.1);
-}
-
-.image {
-    width: 100%;
-    height: 100%;
-}
-
-.title {
-    position: absolute;
-    bottom: 50%;
-    left: 50%;
-    transform: translate(-50%);
-    z-index: 100;
-    font-size: 1.5rem;
-    font-weight: 600;
+    background-color: #333;
+    margin-right: .5rem;
+    padding: 2px 1.3rem;
+    border-radius: 5px;
     color: white;
-    width: 100%;
-    text-align: center;
-} */
+    margin-top: 1rem;
+}
+
+.orther-icon i {
+    position: absolute;
+    right: -3px;
+    top: -3px;
+    color: #fff;
+    background-color: red;
+    border-radius: 50%;
+    padding: 0 3px;
+    cursor: pointer;
+}
 
 @keyframes scaleImage {
     from {
