@@ -59,8 +59,6 @@ export const addNewCategories = (data) => async (dispatch) => {
     } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
-        // toast.error(error?.response?.data?.error?.message);
-        console.log("error", error)
     }
 };
 
@@ -72,7 +70,6 @@ export const getListCategories = (key) => async (dispatch) => {
     } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
-        // toast.error(error?.response?.data?.error?.message);
     }
 };
 

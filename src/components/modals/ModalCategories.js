@@ -26,8 +26,6 @@ function ModalCategories({
     //Functions
     const hanleChangeInput = (e, input) => {
         const value = e.target.value;
-        console.log("value", value)
-        console.log("input", input)
         switch (input) {
             case "title":
                 setData({ ...data, title: value.trim() })

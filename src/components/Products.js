@@ -14,35 +14,69 @@ import ModalDelete from "./modals/ModalDelete";
 
 const HEADER = ["Singer", "Song", "Image", "Category", "Genres Orther", "Time", "Audio"];
 
-const LIST = [
+const tabs = [
   {
-    singer: "Truong",
-    song: "ahihi",
-    image:
-      "https://tse1.mm.bing.net/th?id=OIP.5FSdxaElaoGckmdsqh5rXQAAAA&pid=Api&P=0",
-    categories: "Pop",
-    time: "03:05",
-    audio: "ahihi",
+    moods_action: "Tâm Trạng Và Hoạt Động"
   },
   {
-    singer: "Truong",
-    song: "ahihi",
-    image:
-      "https://tse1.mm.bing.net/th?id=OIP.5FSdxaElaoGckmdsqh5rXQAAAA&pid=Api&P=0",
-    categories: "Pop",
-    time: "03:05",
-    audio: "ahihi",
+    countries: "Quốc Gia"
   },
   {
-    singer: "Truong",
-    song: "ahihi",
-    image:
-      "https://tse1.mm.bing.net/th?id=OIP.5FSdxaElaoGckmdsqh5rXQAAAA&pid=Api&P=0",
-    categories: "Pop",
-    time: "03:05",
-    audio: "ahihi",
+    romantic_bolero: "Trữ Tình Và Bolero"
+  },
+  {
+    edm: "EDM"
+  },
+  {
+    remix: "Remix"
+  },
+  {
+    hiphop: "HipHop"
+  },
+  {
+    r_b: "R&B"
+  },
+  {
+    music_film: "Nhạc Phim"
+  },
+  {
+    india: "India"
+  },
+  {
+    guitar: "Guitar"
+  },
+  {
+    none_lyrics: "Nhạc Không Lời"
+  },
+  {
+    acoustic: "Acoustic"
+  },
+  {
+    immortalMusic_VN: "Nhạc Việt Bất Hủ"
+  },
+  {
+    music_Trinh: "Nhạc Trịnh"
+  },
+  {
+    jazz: "Jazz"
+  },
+  {
+    rock: "Rock"
+  },
+  {
+    latin: "Latin"
+  },
+  {
+    piano: "Piano"
+  },
+  {
+    classicMusic: "Nhạc Cổ Điển"
+  },
+  {
+    immortalMusic_US_UK: "Nhạc Âu Mỹ Bất Hủ"
   },
 ];
+
 export const ListProduct = ({
   products,
   widthItem,
@@ -69,13 +103,15 @@ export const ListProduct = ({
   };
 
   const handleCurrentItem = (item) => {
-    currentItem && item?._id === currentItem?._id ? setCurrentItem(null) : setCurrentItem(item);
+    currentItem && item?._id === currentItem?._id ?
+      setCurrentItem(null) :
+      setCurrentItem(item);
   }
 
   return (
     <div className="wrapper-content-products" style={listStyle}>
-      {products.length > 0 &&
-        products.map((item, index) => (
+      {products?.length > 0 &&
+        products?.map((item, index) => (
           <div key={index} className="item-product"
             style={{
               backgroundColor: custom && "red",
@@ -109,7 +145,7 @@ export const ListProduct = ({
               }}
               className="wrapper-image-product"
             >
-              <img src={item.image} alt={item.song} />
+              <img src={item?.image} alt={item.song} />
             </div>
             <div
               style={{
@@ -117,7 +153,7 @@ export const ListProduct = ({
                 textTransform: "capitalize"
               }}
             >
-              {item.category}
+              {item?.category || ""}
             </div>
             <div
               style={{
@@ -125,14 +161,14 @@ export const ListProduct = ({
                 textTransform: "capitalize"
               }}
             >
-              {item.orther}
+              {item?.orther ? item?.orther[0] : ""}
             </div>
             <div
               style={{
                 width: widthItem,
               }}
             >
-              {item.time}
+              {item?.time || ""}
             </div>
             <div
               style={{
@@ -308,6 +344,8 @@ function Products() {
               setOpenModal={setOpenModal}
               openModal={openModal}
               currentItem={currentItem}
+              setCurrentItem={setCurrentItem}
+              tabs={tabs}
             />
           )
         }

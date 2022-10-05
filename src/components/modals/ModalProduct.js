@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { getListCategories } from "../../features/apis/CategoriesSlice";
 import { addNewProduct, updateProduct } from "../../features/apis/ProductSlice";
-import { cloudinaryUpload } from "../../utils/cloudinary";
 import ButtonPrimary from "../buttons/ButtonPrimary";
 
 function ModalProduct({
   setOpenModal,
   openModal,
   currentItem,
+  setCurrentItem,
+  tabs,
 }) {
   const [input, setInput] = useState({
     singer: "",
@@ -22,6 +22,7 @@ function ModalProduct({
   });
   const [genres, setGenres] = useState(null);
   const [ortherList, setOrtherList] = useState(null);
+  const [currentOrthers, setCurrentOrthers] = useState(null);
 
   const dispatch = useDispatch();
   const ortherRef = useRef();
@@ -31,7 +32,7 @@ function ModalProduct({
   };
 
   const handleChangeInput = async (e, item) => {
-    const value = e.target.value;
+    let value = e.target.value;
 
     if (item === "image") {
       const selectFile = e.target.files[0];
@@ -64,11 +65,8 @@ function ModalProduct({
         case "time":
           setInput({ ...input, time: value });
           break;
-        case "categories":
-          setInput({ ...input, category: value });
-          break;
         case "orther":
-          setGenres(value);
+          setGenres(value.charAt(0).toUpperCase() + value.slice(1));
           break;
         default:
           break;
@@ -77,29 +75,69 @@ function ModalProduct({
   };
 
   const handleAddInOrther = () => {
-    if (genres) {
-      input?.orther?.push(genres);
-      ortherRef.current.value = "";
-      setOrtherList(genres);
-    }
+    if (genres.length === 0) return;
+    if (openModal === "ADD") {
+      if (input?.orther?.length > 0) {
+        if (input?.orther?.includes(genres)) return toast.error("Orther name existed!");
+        input?.orther?.push(genres);
+        ortherRef.current.value = "";
+        setOrtherList(genres);
+        setCurrentOrthers(input?.orther);
+      } else {
+        input?.orther?.push(genres);
+        ortherRef.current.value = "";
+        setOrtherList(genres);
+        setCurrentOrthers(input?.orther);
+      }
+    };
+
+    if (openModal === "UPDATE") {
+      const newValues = [...currentOrthers, genres];
+      if (currentItem?.orther.length > 0) {
+        if (input?.orther.includes(genres) || currentOrthers.includes(genres)) return toast.error("Orther name existed!");
+        setCurrentOrthers(newValues)
+        ortherRef.current.value = "";
+        setOrtherList(genres);
+      } else {
+        setCurrentOrthers(newValues)
+        ortherRef.current.value = "";
+        setOrtherList(genres);
+      }
+      setInput({ ...input, orther: newValues });
+    };
   };
 
   const unchecked = (item) => {
-    const newValue = input?.orther?.filter(e => e !== item);
-    setInput({ ...input, orther: newValue });
-  }
+    const newValues = currentOrthers?.filter(e => e !== item);
+    setCurrentOrthers(newValues);
+    setInput({ ...input, orther: newValues });
+  };
+
+  const handlechange = (e) => {
+    const index = parseInt(e.target.value);
+    console.log({ index })
+    if (index === 0) {
+      setInput({ ...input, category: "" });
+      return;
+    }
+    const category = Object.keys(tabs[index - 1]).join();
+    console.log({ category })
+    setInput({ ...input, category: category });
+  };
 
   const handleSubmit = () => {
     if (openModal === "UPDATE") {
       const id = currentItem?._id;
       dispatch(updateProduct(id, input)).then(() => {
-        setOpenModal(false)
+        setOpenModal(false);
+        setCurrentItem(null);
       })
     } else {
       const inValid = Object.values(input).some((item) => !item);
       if (!inValid && input?.orther.length !== 0) {
         dispatch(addNewProduct(input)).then(() => {
           setOpenModal(false);
+          setCurrentItem(null);
         })
       } else {
         return toast.error("Fields can not empty!");
@@ -118,11 +156,15 @@ function ModalProduct({
   useEffect(() => {
   }, [ortherList]);
 
+  useEffect(() => {
+    setCurrentOrthers(currentItem?.orther);
+  }, []);
+
   return (
     <div className="modal-add-new-product">
       <form action="#" className="inside-modal-add-product">
         <div style={{ color: "green", fontSize: "2rem", fontWeight: 600 }}>
-          Add new product
+          {openModal === "ADD" ? "Add new product" : "Update product"}
         </div>
         <div onClick={handleClose} className="close-modal-add-product">
           <i className="fa-solid fa-xmark"></i>
@@ -149,14 +191,20 @@ function ModalProduct({
             />
           </div>
           <div className="wrapper-item-input">
-            <label htmlFor="categories">Category*</label>
-            <input
-              placeholder={openModal === "ADD" ? "" : `${currentItem.category}`}
-              id="categories"
-              name="categories"
-              value={input.category}
-              onChange={(e) => handleChangeInput(e, "categories")}
-            />
+            <label>Category*</label>
+            <select onChange={(e) => handlechange(e)}>
+              <option
+                value="0"
+              >Choose</option>
+              {tabs.map((tab, index) => (
+                <option
+                  value={index + 1}
+                  key={index}
+                >
+                  {Object.values(tab)}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="wrapper-item-input">
             <label htmlFor="time">Time*</label>
@@ -185,12 +233,14 @@ function ModalProduct({
           </div>
         </div>
         <div className="wrapper-orther-icon">
-          {input.orther?.map((item, index) => (
-            <div key={index} className="orther-icon">
-              {item}
-              <i onClick={() => unchecked(item)} className="fa-solid fa-xmark"></i>
-            </div>
-          ))}
+          {
+            (openModal === "UPDATE" ?
+              currentOrthers : input?.orther)?.map((item, index) => (
+                <div key={index} className="orther-icon">
+                  {item}
+                  <i onClick={() => unchecked(item)} className="fa-solid fa-xmark"></i>
+                </div>
+              ))}
         </div>
         <div className="wrapper-input-file-add">
           <div className="wrapper-item-input">

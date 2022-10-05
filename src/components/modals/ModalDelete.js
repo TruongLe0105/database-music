@@ -13,6 +13,7 @@ function ModalDelete({
     const dispatch = useDispatch();
 
     const handleDelete = () => {
+        console.log({ id })
         dispatch(callback(id)).then(() => {
             setOpenModalDelete(false);
             setCurrentCard(null);

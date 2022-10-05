@@ -1,14 +1,13 @@
 .component-general {
     margin-left: 25%;
     margin-top: 2rem;
-    margin-right: 2rem;
-    /* background-color: #333; */
 }
 
 .tabs-new_music {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin-top: 3rem;
 }
 
 .tab-music {
@@ -20,4 +19,18 @@
     margin-left: 0;
     font-size: 1.6rem;
     color: white;
+}
+
+.btn-new {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.title-header {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: green;
+    margin-top: 3rem;
+    font-weight: 900;
 }

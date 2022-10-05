@@ -8,7 +8,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'Chakra Petch', sans-serif;
 }
 
 .main-layout {
@@ -163,6 +162,15 @@
     border-radius: 5px;
     outline: none;
     height: 2.5rem;
+}
+
+.wrapper-item-input select {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.01);
+    border-radius: 5px;
+    outline: none;
+    height: 2.9rem;
+    font-size: 1.2rem;
 }
 
 .wrapper-item-input-file {

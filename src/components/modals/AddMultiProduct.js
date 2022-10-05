@@ -11,9 +11,10 @@ import { HeaderProduct, ListProduct } from "../Products";
 function AddMultiProduct({ data, setOpenAddMultiProduct }) {
   const [listInvalid, setlistInvalid] = useState([]);
   const [listValid, setListValid] = useState([]);
+  const [continuePush, setContinuePush] = useState(true);
   const dispatch = useDispatch();
 
-  const { products } = useSelector(state => state.product);
+  const { products, isLoading } = useSelector(state => state.product);
 
   const widthItem = `calc(100% / ${Object.keys(data[0])?.length})`;
   const handleClose = () => {
@@ -21,28 +22,30 @@ function AddMultiProduct({ data, setOpenAddMultiProduct }) {
   };
 
   const handleSubmit = () => {
-    listValid.map(item => {
+    listValid.forEach(item => {
       dispatch(addNewProduct(item));
       setOpenAddMultiProduct(false);
     })
   };
 
   const checkListValid = () => {
-    const listSinger = products.map(product => product.singer.toString().toLowerCase());
-    console.log("listSinger", listSinger)
-    const listSong = products.map(product => product.song.toString().toLowerCase());
+    const listSinger = products?.map(product => product?.singer?.toString().toLowerCase());
+    const listSong = products?.map(product => product?.song?.toString().toLowerCase());
     const listValid = [];
     const listInvalid = [];
-    data.map(item => {
-      console.log("item:", item)
-      if (listSinger.includes(item.singer.toString().toLowerCase()) && listSong.includes(item.song.toString().toLowerCase())) {
+    data.forEach(item => {
+      if (!item.singer || !item.song) {
+        toast.error("Field singer or song are emptying!");
+        return setContinuePush(false);
+      }
+      if (listSinger.includes(item?.singer?.toString().toLowerCase()) && listSong.includes(item?.song?.toString().toLowerCase())) {
         listInvalid.push(item);
       } else {
         listValid.push(item);
       }
-      setlistInvalid(listInvalid);
-      setListValid(listValid);
     })
+    setlistInvalid(listInvalid);
+    setListValid(listValid);
   };
 
   useEffect(() => {
@@ -58,6 +61,7 @@ function AddMultiProduct({ data, setOpenAddMultiProduct }) {
   };
 
   return (
+    // continuePush && (
     <div className="modal-add-new-product">
       <div className="inside-modal-add-product" style={{ minWidth: "80%" }}>
         <div onClick={handleClose} className="close-modal-add-product">
@@ -82,6 +86,7 @@ function AddMultiProduct({ data, setOpenAddMultiProduct }) {
         </div>
       </div>
     </div>
+    // )
   );
 }
 
